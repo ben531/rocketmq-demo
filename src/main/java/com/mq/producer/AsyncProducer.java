@@ -16,23 +16,22 @@ import java.util.concurrent.TimeUnit;
 public class AsyncProducer {
     public static void main(String[] args) throws Exception {
         // 实例化消息生产者Producer
-        DefaultMQProducer producer = new DefaultMQProducer("please_rename_unique_group_name");
+        DefaultMQProducer producer = new DefaultMQProducer("my-group-name-A");
         // 设置NameServer的地址
         producer.setNamesrvAddr("localhost:9876");
         // 启动Producer实例
         producer.start();
         producer.setRetryTimesWhenSendAsyncFailed(0);
-
         int messageCount = 100;
         // 根据消息数量实例化倒计时计算器
         final CountDownLatch2 countDownLatch = new CountDownLatch2(messageCount);
         for (int i = 0; i < messageCount; i++) {
             final int index = i;
             // 创建消息，并指定Topic，Tag和消息体
-            Message msg = new Message("TopicTest",
-                    "TagA",
+            Message msg = new Message("topic-AsyncProducer",
+                    "tag-AsyncProducer",
                     "OrderID188",
-                    "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
+                    ("AsyncProducer"+i).getBytes(RemotingHelper.DEFAULT_CHARSET));
             // SendCallback接收异步返回结果的回调
             producer.send(msg, new SendCallback() {
                 @Override

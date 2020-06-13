@@ -19,13 +19,15 @@ public class Consumer {
         // NameServer地址
         consumer.setNamesrvAddr("localhost:9876");
         // 1：topic名字 2：tag名字
-        consumer.subscribe("topic-name-A", "tag-name-A");
+        consumer.subscribe("topic-SyncProducer", "tag-SyncProducer");
+        consumer.subscribe("topic-OnewayProducer", "tag-OnewayProducer");
+        consumer.subscribe("topic-AsyncProducer", "tag-AsyncProducer");
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(
                     List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 for (MessageExt msg : msgs) {
-                    System.out.println(LocalTime.now()+ ": "+ new String(msg.getBody()));
+                    System.out.println(new String(msg.getBody()));
                 }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }

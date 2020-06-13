@@ -16,17 +16,22 @@ public class OnewayProducer {
         producer.setNamesrvAddr("localhost:9876");
         // 启动Producer实例
         producer.start();
-        for (int i = 0; i < 100; i++) {
+//        for (int i = 0; i < 100; i++) {
+        int i=0;
+        while (true){
+            i++;
             // 创建消息，并指定Topic，Tag和消息体
-            Message msg = new Message("topic-name-A" /* Topic */,
-                    "tag-name-A" /* Tag */,
-                    ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+            Message msg = new Message("topic-OnewayProducer" /* Topic */,
+                    "tag-OnewayProducer" /* Tag */,
+                    ("OnewayProducer " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
             );
             // 发送单向消息，没有任何返回结果
             producer.sendOneway(msg);
 
         }
+
+//        System.out.println("执行完毕");
         // 如果不再发送消息，关闭Producer实例。
-        producer.shutdown();
+//        producer.shutdown();
     }
 }
