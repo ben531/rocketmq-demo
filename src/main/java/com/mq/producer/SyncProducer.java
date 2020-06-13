@@ -12,15 +12,15 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
 public class SyncProducer {
     public static void main(String[] args) throws Exception {
         // 实例化消息生产者Producer
-        DefaultMQProducer producer = new DefaultMQProducer("please_rename_unique_group_name");
+        DefaultMQProducer producer = new DefaultMQProducer("my-group-name-A");
         // 设置NameServer的地址
         producer.setNamesrvAddr("localhost:9876");
         // 启动Producer实例
         producer.start();
         for (int i = 0; i < 100; i++) {
             // 创建消息，并指定Topic，Tag和消息体
-            Message msg = new Message("TopicTest" /* Topic */,
-                    "TagA" /* Tag */,
+            Message msg = new Message("topic-name-A" /* Topic */,
+                    "tag-name-A" /* Tag */,
                     ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
             );
             // 发送消息到一个Broker
