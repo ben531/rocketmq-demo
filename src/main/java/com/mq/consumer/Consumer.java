@@ -14,14 +14,22 @@ import java.util.List;
 public class Consumer {
 
     public static void main(String[] args) throws MQClientException {
-        // 这里填写group名字
+        // 实例化消费者, 这里填写group名字
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("my-group-name-A");
-        // NameServer地址
+        // 设置NameServer的地址
         consumer.setNamesrvAddr("localhost:9876");
+        // 订阅一个或者多个Topic，以及Tag来过滤需要消费的消息
         // 1：topic名字 2：tag名字
         consumer.subscribe("topic-SyncProducer", "tag-SyncProducer");
         consumer.subscribe("topic-OnewayProducer", "tag-OnewayProducer");
         consumer.subscribe("topic-AsyncProducer", "tag-AsyncProducer");
+        // 注册回调实现类来处理从broker拉取回来的消息
+//        MessageListenerConcurrently messageListenerConcurrently = new MessageListenerConcurrently() {
+//            @Override
+//            public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
+//                return null;
+//            }
+//        };
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(
@@ -29,6 +37,7 @@ public class Consumer {
                 for (MessageExt msg : msgs) {
                     System.out.println(new String(msg.getBody()));
                 }
+                // 标记该消息已经被成功消费
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
